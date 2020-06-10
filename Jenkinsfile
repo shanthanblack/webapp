@@ -16,7 +16,7 @@ pipeline {
     stage ('Check-Git-Secrets') {
       steps {
         sh 'rm trufflehog || true'
-        sh 'docker run gesellix/trufflehog --json  https://github.com/adarshreddy94/webapp.git > trufflehog'
+        sh 'docker run gesellix/trufflehog --json  https://github.com/shanthanblack/webapp.git > trufflehog'
         sh 'cat trufflehog'
       }
     }
@@ -24,7 +24,7 @@ pipeline {
    stage ('Source Composition Analysis') {
       steps {
          sh 'rm owasp* || true'
-         sh 'wget "https://raw.githubusercontent.com/adarshreddy94/webapp/master/owasp-dependency-check.sh" '
+         sh 'wget "https://raw.githubusercontent.com/shanthanblack/webapp/master/owasp-dependency-check.sh" '
          sh 'chmod +x owasp-dependency-check.sh'
          sh 'bash owasp-dependency-check.sh'
          sh 'cat /var/lib/jenkins/OWASP-Dependency-Check/reports/dependency-check-report.xml'
@@ -50,7 +50,7 @@ stage ('Build') {
     stage ('Deploy-To-Tomcat') {
             steps {
            sshagent(['tomcat']) {
-                sh 'scp -o StrictHostKeyChecking=no target/*.war ubuntu@35.154.238.109:/opt/apache-tomcat-8.5.55/webapps/webapp.war'
+                sh 'scp -o StrictHostKeyChecking=no target/*.war ec2-user@13.126.68.120:/opt/tomcat/webapps/webapp.war'
               }      
            }       
     }
@@ -59,7 +59,7 @@ stage ('Build') {
     stage ('DAST') {
       steps {
         sshagent(['zap']) {
-         sh 'ssh -o  StrictHostKeyChecking=no ubuntu@13.232.254.120 "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://35.154.238.109:8080/webapp/" || true'
+         sh 'ssh -o  StrictHostKeyChecking=no ec2-user@13.126.68.120 "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://13.126.68.120:8080/webapp/" || true'
         }
       }
     }
