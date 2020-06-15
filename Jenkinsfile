@@ -49,7 +49,7 @@ stage ('Build') {
     
     stage ('Deploy-To-Tomcat') {
             steps {
-                sh 'scp -o StrictHostKeyChecking=no target/*.war ubuntu@172.31.42.242:/opt/tomcat/webapps/webapp.war'      
+                sh 'sudo scp -o StrictHostKeyChecking=no target/*.war ubuntu@172.31.42.242:/opt/tomcat/webapps/webapp.war'      
            }       
     }
     
