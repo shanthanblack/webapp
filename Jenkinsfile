@@ -49,6 +49,8 @@ stage ('Build') {
     stage ('Open-port-scanning') {
       steps {
         sh 'sh port.sh'
+      }
+    }
     
     stage ('Deploy-To-Tomcat') {
             steps {
