@@ -54,7 +54,7 @@ stage ('Build') {
     
     stage ('Deploy-To-Tomcat') {
             steps {
-              sshagent(['ssh-con']) {
+              sshagent(['ssh-conf']) {
                 sh 'scp -o StrictHostKeyChecking=no target/*.war ubuntu@172.31.35.110:/opt/tomcat/webapps/webapp.war'  
               }      
            }       
