@@ -49,7 +49,6 @@ stage ('Build') {
     stage ('Open-port-scanning') {
       steps {
         sh 'gauntlt portscan.attack'
-        sh 'gauntlt test.attack'
       }
     }
     
