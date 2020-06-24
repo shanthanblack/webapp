@@ -1,4 +1,4 @@
-Feature: nmap attacks for scanme.nmap.org and to use this for your tests, change the value in the profile
+Feature: nmap attacks for server and to use this for your tests, change the value in the profile
 Background:
   Given "nmap" is installed
   And the following profile:
