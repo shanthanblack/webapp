@@ -43,17 +43,6 @@ Feature: to check wether required ports are open
       | method  | response      |
       | delete  | Error 405 (Method Not Allowed)        |
       | patch   | Error 405 (Method Not Allowed)        |
-      | trace   | Error 405 (Method Not Allowed)        |
-      | track   | Error 405 (Method Not Allowed)        |
-  Scenario: to check whether the it is open port
-    When I launch an "sslyze" attack with:
-      """
-      sslyze --regular 172.31.47.9
-      """
-    Then the output should not contain:
-      """
-      Anon
-      """
 
 
 
