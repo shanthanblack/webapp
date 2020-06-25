@@ -1,19 +1,59 @@
-Feature: Launch generic attack
+@slow
+Feature: to check wether required ports are open
+  Background:
+    Given "nmap" is installed
+    And the following profile:
+      | name    | value |
+      | hostname        | 172.31.47.9   |
+      | tcp_ping_ports  | 22,25,80,443  |
+  Scenario: Verify expected ports are open
+    When I launch an "nmap" attack with:
+      """
+      nmap -p 22 172.31.47.9
+      """
+    Then the output should match:
+      """
+      22/tcp\s+open
+      """
+  Scenario: to check ping results
+    When I launch an "generic" attack with:
+      """
+      ping -c 1 172.31.47.9
+      """
+    Then the output should match:
+      """
+      this port is vulnerable
+      """
+  Scenario: Verify whether the 80 port is working properly
+    When I launch an "nmap" attack with:
+      """
+      nmap -p 80 172.31.47.9
+      """
+    Then the output should match:
+      """
+      80/tcp\s+open
+      """
+  Scenario Outline: Perform few attacks on it
+    When I launch a "curl" attack with:
+      """
+      curl -i -X GET 172.31.47.9
+      """
+    Then the output should contain "<response>"
+    Examples:
+      | method  | response      |
+      | delete  | Error 405 (Method Not Allowed)        |
+      | patch   | Error 405 (Method Not Allowed)        |
+      | trace   | Error 405 (Method Not Allowed)        |
+      | track   | Error 405 (Method Not Allowed)        |
+  Scenario: to check whether the it is open port
+    When I launch an "sslyze" attack with:
+      """
+      sslyze --regular 172.31.47.9
+      """
+    Then the output should not contain:
+      """
+      Anon
+      """
 
-This attack adapter allows for any command line binary to be executed and the output parsed. This can be used to run new attacks not yet supported by gauntlt. It can also be used to run custom scripts created by the user, which can allow for gauntlt attacks to be fully customized.
 
-Background:
-  Given the "ping" command line binary is installed
-  And the following profile:
-    | name     | value      |
-    | hostname | test  |
 
-Scenario: Verify a packet is received from ping
-  When I launch a "generic" attack with:
-    """
-    ping -c 1 172.31.47.9
-    """
-  Then it should pass with regexp:
-    """
-    1 packets transmitted, 1 (packets )?received, 0(\.0)?% packet loss
-    """
