@@ -1,11 +1,11 @@
 @slow
-Feature: to check wether required ports are open
+Feature: To scan the open ports
   Background:
     Given "nmap" is installed
     And the following profile:
-      | name    | value |
+      | name            | value |
       | hostname        | 172.31.47.9   |
-      | tcp_ping_ports  | 22,25,80,443  |
+      | tcp_ping_ports  | 22,80,443     |
   Scenario: Verify expected ports are open
     When I launch an "nmap" attack with:
       """
@@ -15,16 +15,19 @@ Feature: to check wether required ports are open
       """
       22/tcp\s+open
       """
-  Scenario: to check ping results
-    When I launch an "generic" attack with:
-      """
-      ping -c 1 172.31.47.9
-      """
-    Then the output should match:
-      """
-      this port is vulnerable
-      """
-  Scenario: Verify whether the 80 port is working properly
+    And the following profile:
+      | tcp_ports       | 22    |
+    Scenario: Verify whether it works
+      When I launch an "generic" attack with:
+
+        """
+        ping -c 1 172.31.47.9
+        """
+      Then the output should match:
+        """
+        successfull communication
+        """
+  Scenario: Verify port is open
     When I launch an "nmap" attack with:
       """
       nmap -p 80 172.31.47.9
@@ -33,16 +36,40 @@ Feature: to check wether required ports are open
       """
       80/tcp\s+open
       """
-  Scenario Outline: Perform few attacks on it
-    When I launch a "curl" attack with:
+     And the following profile:
+       Scenario Outline: Perform few attacks on it
+         When I launch a "curl" attack with:
+           """
+           curl -i -X GET 172.31.47.9
+           """
+         Then the output should contain "<response>"
+         Examples:
+           | method  | response      |
+           | delete  | Error 405 (Method Not Allowed)        |
+           | patch   | Error 405 (Method Not Allowed)        |
+           | trace   | Error 405 (Method Not Allowed)        |
+           | track   | Error 405 (Method Not Allowed)        |
+  Scenario: Verify the 443 port is listening
+    When I launch an "nmap" attack with:
       """
-      curl -i -X GET 172.31.47.9
+      nmap -p 443 172.31.47.9
       """
-    Then the output should contain "<response>"
-    Examples:
-      | method  | response      |
-      | delete  | Error 405 (Method Not Allowed)        |
-      | patch   | Error 405 (Method Not Allowed)        |
+    Then the output should match:
+      """
+      443/tcp\s+open
+      """
+    And the following profile:
+      Scenario: perform few attacks on port
+        When I launch a "sslyze" attack with:
+          """
+          sslyze --regular 172.31.47.9
+          """
+        Then the output should match:
+          """
+          vulnerable port
+          """
+
+
 
 
 
