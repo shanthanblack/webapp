@@ -37,11 +37,7 @@ stage ('Build') {
       sh 'mvn clean package'
     }
     }
-    stage ('Open-port-scanning') {
-      steps {
-        sh 'gauntlt portscan.attack'
-      }
-    }
+
     
     stage ('Deploy-To-Tomcat') {
             steps {
