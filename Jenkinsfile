@@ -38,6 +38,11 @@ stage ('Build') {
       sh 'mvn clean package'
     }
     }
+    stage ('Gauntlt-script-execution') {
+      steps {
+        sh 'gauntlt test.attack'
+      }
+    }
     
     
     stage ('Deploy-To-Tomcat') {
