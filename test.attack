@@ -4,12 +4,12 @@ Feature: To scan the open ports
     Given "nmap" is installed
     And the following profile:
       | name            | value |
-      | hostname        | 172.31.47.9   |
+      | hostname        | 10.0.2.15   |
       | tcp_ping_ports  | 22,80,443     |
   Scenario: Verify expected ports are open
     When I launch an "nmap" attack with:
       """
-      nmap -p 22 172.31.47.9
+      nmap -p 22 10.0.2.15
       """
     Then the output should match:
       """
@@ -21,7 +21,7 @@ Feature: To scan the open ports
       When I launch an "generic" attack with:
 
         """
-        ping -c 1 172.31.47.9
+        ping -c 1 10.0.2.15
         """
       Then the output should match:
         """
@@ -30,7 +30,7 @@ Feature: To scan the open ports
   Scenario: Verify port is open
     When I launch an "nmap" attack with:
       """
-      nmap -p 80 172.31.47.9
+      nmap -p 80 10.0.2.15
       """
     Then the output should match:
       """
@@ -40,7 +40,7 @@ Feature: To scan the open ports
        Scenario Outline: Perform few attacks on it
          When I launch a "curl" attack with:
            """
-           curl -i -X GET 172.31.47.9
+           curl -i -X GET 10.0.2.15
            """
          Then the output should contain "<response>"
          Examples:
@@ -52,7 +52,7 @@ Feature: To scan the open ports
   Scenario: Verify the 443 port is listening
     When I launch an "nmap" attack with:
       """
-      nmap -p 443 172.31.47.9
+      nmap -p 443 10.0.2.15
       """
     Then the output should match:
       """
@@ -62,7 +62,7 @@ Feature: To scan the open ports
       Scenario: perform few attacks on port
         When I launch a "sslyze" attack with:
           """
-          sslyze --regular 172.31.47.9
+          sslyze --regular 10.0.2.15
           """
         Then the output should match:
           """
