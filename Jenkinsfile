@@ -46,11 +46,6 @@ stage ('Build') {
     }
     }
     
-    stage ('Gauntlt-attack-check') {
-      steps {
-        sh 'gauntlt test.attack'
-      }
-    }
     
     stage ('Deploy-To-Tomcat') {
             steps {
