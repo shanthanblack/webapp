@@ -39,7 +39,7 @@ stage ('Build') {
 }
     stage ('Gauntlt-check') {
       steps {
-        sh 'gauntlt test.attack >> man.txt'
+        sh '"gauntlt test.attack" >> man.txt'
       }
     }
     
