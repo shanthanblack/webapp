@@ -49,7 +49,7 @@ stage ('Build') {
          sh 'docker run -t owasp/zap2docker-stable zap-baseline.py -t http://10.0.2.15:8090/webapp/ || true'
       }
     }
-    step ('Container-security-scan') {
+    stage ('Container-security-scan') {
       steps {
         def imageLine = 'tomcat'
         writeFile file: 'anchore_images', text: imageLine
