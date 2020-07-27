@@ -36,15 +36,7 @@ stage ('Build') {
       steps {
       sh 'mvn clean package'
     }
-}
-   stage ('Gauntlt-Scan') {
-      steps {
-        sh 'gauntlt test.attack'
-      }
-    } 
-    
-    
-    
+}    
     stage ('Deploy-To-Tomcat') {
             steps {
                 sh 'cp target/*.war /opt/tomcat/webapps/webapp.war'       
@@ -55,6 +47,13 @@ stage ('Build') {
     stage ('DAST') {
       steps {
          sh 'docker run -t owasp/zap2docker-stable zap-baseline.py -t http://10.0.2.15:8090/webapp/ || true'
+      }
+    }
+    step ('Container-security-scan') {
+      steps {
+        def imageLine = 'tomcat'
+        writeFile file: 'anchore_images', text: imageLine
+        anchore name: 'anchore_images'
       }
     }
     
