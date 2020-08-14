@@ -1,8 +1,5 @@
 pipeline {
   agent any 
-  environment {
-    def imageLine = 'alpine:latest'
-  }
   tools {
     maven 'maven'
   }
@@ -21,17 +18,6 @@ pipeline {
         sh 'rm trufflehog || true'
         sh 'docker run gesellix/trufflehog --json  https://github.com/shanthanblack/webapp.git > trufflehog'
         sh 'cat trufflehog'
-      }
-    }
-    
-   stage ('Source Composition Analysis') {
-      steps {
-         sh 'rm owasp* || true'
-         sh 'wget "https://raw.githubusercontent.com/shanthanblack/webapp/master/owasp-dependency-check.sh" '
-         sh 'chmod +x owasp-dependency-check.sh'
-         sh 'bash owasp-dependency-check.sh'
-         sh 'cat /var/lib/jenkins/OWASP-Dependency-Check/reports/dependency-check-report.xml'
-        
       }
     }
     stage ('SAST') {
@@ -60,13 +46,6 @@ stage ('Build') {
          sh 'docker run -t owasp/zap2docker-stable zap-baseline.py -t http://10.0.2.15:8090/webapp/ || true'
       }
     }
-    stage ('Container-scanner') {
-        steps {
-            writeFile file: 'anchore_images', text: imageLine
-            anchore name: 'anchore_images'
-        }
-    }
-    
     
   }
 }
