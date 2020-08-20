@@ -33,16 +33,16 @@ stage ('Build') {
       steps {
       sh 'mvn clean package'
     }
-  post {
-    always {
-      jiraSendBuildInfo site: 'shanthanidentity.atlassian.net'
-    }
-  }
 }
     stage ('Deploy-To-Tomcat') {
             steps {
                 sh 'cp target/*.war /opt/tomcat/webapps/webapp.war'       
-           }       
+           }
+          post {
+                 always {
+                     jiraSendDeploymentInfo site: 'shanthanidentity.atlassian.net', environmentId: 'us-stg-1', environmentName: 'us-stg-1', environmentType: 'staging'
+                 }
+             }
     }
     
     
