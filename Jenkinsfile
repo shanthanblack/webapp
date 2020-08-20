@@ -33,6 +33,12 @@ stage ('Build') {
       steps {
       sh 'mvn clean package'
     }
+  post {
+    always {
+      jiraSendBuildInfo branch: 'master', site: 'shanthanidentity.atlassian.net'
+    }
+  }
+  
 }
     stage ('Deploy-To-Tomcat') {
             steps {
