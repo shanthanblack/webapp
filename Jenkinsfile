@@ -35,7 +35,7 @@ stage ('Build') {
     }
   post {
     always {
-          jiraSendBuildInfo site: 'shanthanidentity.atlassian.net', environmentId: 'destro', environmentName: 'destro', environmentType: 'testing'
+          jiraSendBuildInfo branch: 'master', site: 'shanthanidentity.atlassian.net'
     }
   }
   
