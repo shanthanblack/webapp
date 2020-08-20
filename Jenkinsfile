@@ -46,7 +46,7 @@ stage ('Build') {
            }
           post {
                  always {
-                     jiraSendDeploymentInfo site: 'shanthanidentity.atlassian.net', environmentId: 'us-stg-1', environmentName: 'us-stg-1', environmentType: 'staging'
+                     jiraSendDeploymentInfo site: 'shanthanidentity.atlassian.net', environmentId: 'ap-south-1', environmentName: 'ap-south-1', environmentType: 'Dev'
                  }
              }
     }
