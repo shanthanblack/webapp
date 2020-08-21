@@ -35,7 +35,7 @@ stage ('Build') {
     }
   post {
     always {
-          jiraEditComment comment: 'comment overhead modified in jenkins pipeline', commentId: '10007', idOrKey: 'PT-3', site: 'jira'
+          jiraSendBuildInfo branch: 'master', site: 'shanthanidentity.atlassian.net'
     }
   }
   
