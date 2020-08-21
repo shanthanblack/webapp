@@ -35,7 +35,7 @@ stage ('Build') {
     }
   post {
     always {
-          jiraAddWatcher idOrKey: 'PT-3', site: 'jira', userName: 'shanthan5a7@gmail.com'
+          jiraAssignIssue idOrKey: 'PT-5', site: 'jira', userName: 'shanthan5a7@gmail.com'
     }
   }
   
