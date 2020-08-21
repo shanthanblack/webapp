@@ -36,6 +36,7 @@ stage ('Build') {
   post {
     always {
           jiraAddComment comment: 'the code has library issues', idOrKey: 'PT-3', site: 'jira'
+          jiraAddWatcher idOrKey: 'PT-3', site: 'jira', userName: 'shanthan5a7@gmail.com'
     }
   }
   
