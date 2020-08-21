@@ -35,7 +35,7 @@ stage ('Build') {
     }
   post {
     always {
-          jiraAssignIssue idOrKey: 'PT-5', site: 'jira', userName: 'shanthan5a7@gmail.com'
+          jiraEditComment comment: 'comment overhead modified in jenkins pipeline', commentId: '10007', idOrKey: 'PT-3', site: 'jira'
     }
   }
   
