@@ -35,7 +35,7 @@ stage ('Build') {
     }
   post {
     always {
-          jiraSendBuildInfo branch: 'master', site: 'shanthanidentity.atlassian.net'
+          jiraAddComment comment: 'the code has library issues', idOrKey: 'PT-3', site: 'jira'
     }
   }
   
