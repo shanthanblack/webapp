@@ -48,8 +48,7 @@ stage ('Build') {
     always {
           jiraSendBuildInfo branch: 'master', site: 'shanthanidentity.atlassian.net'
     }
-  }
-  
+  } 
 }
     stage ('Deploy-To-Tomcat') {
             steps {
