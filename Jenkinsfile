@@ -1,8 +1,5 @@
 pipeline {
   agent any
-  environment {
-    def imageLine = 'alpine:latest'
-  }
   tools {
     maven 'maven'
   }
@@ -61,12 +58,7 @@ stage ('Build') {
          sh 'docker run -t owasp/zap2docker-stable zap-baseline.py -t http://52.66.251.253:8090/webapp/ || true'
       }
     }
-    stage ('Container-scanner') {
-        steps {
-            writeFile file: 'anchore_images', text: imageLine
-            anchore name: 'anchore_images'
-        }
-    }
+    
     
   }
 }
