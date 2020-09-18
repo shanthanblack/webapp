@@ -1,5 +1,8 @@
 pipeline {
-  agent any 
+  agent any
+  environment {
+    def imageLine = 'shanthan12345/mywebapp:latest'
+  }
   tools {
     maven 'maven'
   }
@@ -24,13 +27,13 @@ pipeline {
       steps {
          sh 'rm owasp* || true'
          sh 'wget "https://raw.githubusercontent.com/adarshreddy94/webapp/master/owasp-dependency-check.sh" '
-         sh 'chmod +x owasp-dependency-check.sh'
+         sh 'chmod 777 owasp-dependency-check.sh'
          sh 'bash owasp-dependency-check.sh'
-         sh 'cat /var/lib/jenkins/workspace/devsecops-cicd/odc-reports/dependency-check-report.xml'
+         sh 'cat /var/lib/jenkins/workspace/PT-3/odc-reports/dependency-check-report.xml'
         
       }
     }
-    
+
     stage ('SAST') {
       steps {
         withSonarQubeEnv('sonar') {
@@ -44,21 +47,20 @@ stage ('Build') {
       steps {
       sh 'mvn clean package'
     }
-  post {
+    post {
     always {
-          jiraSendBuildInfo branch: 'PT-3', site: 'shanthanidentity.atlassian.net'
+          jiraSendBuildInfo branch: 'master', site: 'shanthanidentity.atlassian.net'
     }
-  }
-  
+  } 
 }
     
     stage ('Deploy-To-Tomcat') {
             steps {
                 sh 'cp target/*.war /opt/tomcat/webapps/webapp.war'       
            }
-          post {
+           post {
                  always {
-                     jiraSendDeploymentInfo environmentId: 'test-1', environmentName: 'test-1', environmentType: 'testing', site: 'shanthanidentity.atlassian.net', state: 'in_progress'
+                     jiraSendDeploymentInfo site: 'shanthanidentity.atlassian.net', environmentId: 'ap-prod-1', environmentName: 'ap-prod-1', environmentType: 'production'
                  }
              }
     }
@@ -66,9 +68,16 @@ stage ('Build') {
     
     stage ('DAST') {
       steps {
-         sh 'docker run -t owasp/zap2docker-stable zap-baseline.py -t http://52.66.251.253:8090/webapp/ || true'
+         sh 'docker run -t owasp/zap2docker-stable zap-baseline.py -t http://13.235.69.128:8090/webapp/ || true'
       }
     }
+    stage ('Container-scanner') {
+        steps {
+            writeFile file: 'anchore_images', text: imageLine
+            anchore name: 'anchore_images'
+        }
+    }
+    
     
   }
 }
