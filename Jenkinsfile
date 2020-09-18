@@ -48,7 +48,7 @@ stage ('Build') {
     }
     post {
     always {
-          jiraSendBuildInfo branch: 'master', site: 'shanthanidentity.atlassian.net'
+          jiraSendBuildInfo branch: 'PT-3', site: 'shanthanidentity.atlassian.net'
     }
   } 
 }
