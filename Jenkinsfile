@@ -29,8 +29,7 @@ pipeline {
          sh 'wget "https://raw.githubusercontent.com/adarshreddy94/webapp/master/owasp-dependency-check.sh" '
          sh 'chmod 777 owasp-dependency-check.sh'
          sh 'bash owasp-dependency-check.sh'
-         sh 'cat /var/lib/jenkins/workspace/PT-3/odc-reports/dependency-check-report.xml'
-        
+         sh 'cat /var/lib/jenkins/workspace/PT-3/odc-reports/dependency-check-report.xml'   
       }
     }
 
