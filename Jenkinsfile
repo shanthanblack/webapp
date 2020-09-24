@@ -32,7 +32,6 @@ pipeline {
          sh 'cat /var/lib/jenkins/workspace/PT-3/odc-reports/dependency-check-report.xml'   
       }
     }
-
     stage ('SAST') {
       steps {
         withSonarQubeEnv('sonar') {
