@@ -59,8 +59,7 @@ stage ('Build') {
                      jiraSendDeploymentInfo site: 'shanthanidentity.atlassian.net', environmentId: 'ap-prod-1', environmentName: 'ap-prod-1', environmentType: 'production'
                  }
              }
-    }
-      
+    }    
     stage ('DAST') {
       steps {
          sh 'docker run -t owasp/zap2docker-stable zap-baseline.py -t http://13.235.69.128:8090/webapp/ || true'
