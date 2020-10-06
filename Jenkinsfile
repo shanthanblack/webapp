@@ -16,7 +16,6 @@ pipeline {
       }
     }
     
-    
     stage ('Check-Git-Secrets') {
       steps {
         sh 'rm trufflehog || true'
