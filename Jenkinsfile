@@ -63,6 +63,7 @@ stage ('Build') {
                  }
              }
     } 
+    
     stage ('DAST') {
       steps {
          sh 'docker run -t owasp/zap2docker-stable zap-baseline.py -t http://15.206.210.23:8090/webapp/ || true'
