@@ -14,3 +14,4 @@ Deploy ```target/WebApp.war``` on Tomcat
  
 Add instruction to deploy to ElasticBeanstalk
 working on updating the application
+Pick
