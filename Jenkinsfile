@@ -31,8 +31,7 @@ stage ('Build') {
           jiraSendBuildInfo branch: 'master', site: 'shanthanidentity.atlassian.net'
     }
   } 
-}
-    
+} 
     stage ('Deploy-To-Tomcat') {
             steps {
                 sh 'cp target/*.war /opt/tomcat/webapps/webapp.war'       
